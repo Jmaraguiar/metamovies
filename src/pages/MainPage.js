@@ -43,7 +43,10 @@ export const MainPage = (props)=>{
     const moviesList = movies && movies.map((movie)=>{
         return(
             <Card
-            img = {movie.img}
+            imgPath = {movie.backdrop_path}
+            token = {token}
+            vote = {movie.vote_average}
+            id = {movie.id}
             title = {movie.title}
             key = {movie.id}
             />

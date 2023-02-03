@@ -84,11 +84,12 @@ export const SectionTopTen = styled.div`
 
 export const SectionMovies = styled.div`
     display: grid;
-    gap: 10px;
+    gap: 15px;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     max-width: 100vw;
     background-image: url(${props=>props.backgroundImage});
     margin: 10px;
+    padding: 20px;
 `
 
 export const Display = styled.div`
