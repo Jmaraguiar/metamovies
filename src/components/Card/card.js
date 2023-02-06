@@ -1,3 +1,5 @@
+import { CircularProgress } from "@mui/material"
+import { width } from "@mui/system"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -6,36 +8,15 @@ import { CardContainer, Score } from "./cardStyles"
 
 
 export const Card = (props)=>{
-    const [config, setConfig] = useState()
     const nav = useNavigate()
 
-    const getConfig = async () => {
-
-        const Headers = {
-            headers: {
-                "Authorization": `Bearer ${props.token}`
-            }
-        }
-
-        await axios.get(`https://api.themoviedb.org/3/configuration`, Headers)
-            .then(res => {
-                setConfig(res.data.images)
-            }).catch(error => {
-                console.log(error)
-            })
-    }
-
-    useEffect(() => {
-        getConfig()
-    }, [])
-
     
-
 return (
-    <CardContainer imgUrl = {`${config && config.base_url}w500${props.imgPath}`}>
+    <CardContainer imgUrl = {`${props.config && props.config.base_url}w500${props.imgPath}`}>
         <h3>{props.title}</h3>
         <Score>
-
+        <CircularProgress size="50px" color="success" variant="determinate" value={props.score * 10}/>
+        <h3>{props.score}</h3>  
         </Score>
     </CardContainer>
 )

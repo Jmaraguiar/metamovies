@@ -76,7 +76,7 @@ export const MainTitle = styled.div`
 
 export const SectionTopTen = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 85vh;
     background-color: ${props=>props.color? props.color : "none"};
@@ -95,7 +95,52 @@ export const SectionMovies = styled.div`
 export const Display = styled.div`
     height: 400px;
     width: 700px;
-    background-color: blue;
+    background-color: transparent;
+    border-radius: 10px;
+
+    iframe{
+        border: none;
+        border-radius: 10px;
+    }
+`
+
+export const NavLeft = styled.div`
+    height: 360px;
+    width: 200px;
+    background: url(${props=>props.img});
+    background-size: cover;
+    background-position: center;
+    transition: all ease-in-out 0.15s;
+
+    :hover{
+        cursor: pointer;
+        transform: scale(105%,105%)  translateX(5px);
+    }
+`
+
+export const NavRight = styled.button`
+    height: 360px;
+    width: 200px;
+    background: url(${props=>props.img});
+    background-size: cover;
+    background-position: center;
+    transition: all ease-in-out 0.15s;
+
+    :hover{
+        cursor: pointer;
+        transform: scale(105%,105%)  translateX(-5px);
+    }
+`
+
+export const NoVideo = styled.div`
+    display: flex;
+    color: white;
+    border-radius: 10px;
+    border: solid white 1px;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
 `
 
 export const FooterMainPage = styled.div`
