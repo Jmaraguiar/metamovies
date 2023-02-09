@@ -1,5 +1,5 @@
-export const goToSignUpPage = (nav)=> {
-    nav(`/signup`)
+export const goToDetailPage = (nav,id)=> {
+    nav(`details/${id}`)
 }
 
 export const goToMainPage = (nav)=> {

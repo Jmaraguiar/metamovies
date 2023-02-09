@@ -1,5 +1,5 @@
 import styled from "styled-components";
-// import img1 from "../../data/cinema.jpg"
+import img1 from "../../data/cinema.jpg"
 import img2 from "../../data/moviesBackground.webp"
 
 export const Container = styled.div`
@@ -87,9 +87,8 @@ export const SectionMovies = styled.div`
     gap: 15px;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     max-width: 100vw;
-    background-image: url(${props=>props.backgroundImage});
-    margin: 10px;
-    padding: 20px;
+    background-color: black;
+    padding: 30px;
 `
 
 export const Display = styled.div`
@@ -107,6 +106,8 @@ export const Display = styled.div`
 export const NavLeft = styled.div`
     height: 360px;
     width: 200px;
+    margin-left: 10px;
+    border-radius: 5px;
     background: url(${props=>props.img});
     background-size: cover;
     background-position: center;
@@ -121,6 +122,8 @@ export const NavLeft = styled.div`
 export const NavRight = styled.button`
     height: 360px;
     width: 200px;
+    margin-right: 10px;
+    border-radius: 5px;
     background: url(${props=>props.img});
     background-size: cover;
     background-position: center;

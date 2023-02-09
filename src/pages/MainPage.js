@@ -58,7 +58,7 @@ export const MainPage = (props)=>{
 
         const Headers = {
             headers: {
-                "Authorization": `Bearer ${props.token}`
+                "Authorization": `Bearer ${token}`
             }
         }
 
@@ -126,7 +126,6 @@ export const MainPage = (props)=>{
             config = {config}
             score = {movie.vote_average}
             imgPath = {movie.backdrop_path}
-            token = {token}
             vote = {movie.vote_average}
             id = {movie.id}
             title = {movie.title}
@@ -175,8 +174,6 @@ return (
                     width="100%"
                     height="100%"
                     src={`https://www.youtube.com/embed/${videoBanner && videoBanner[0].key}`}
-                    frameBorder='0'
-                    allowfullscreen
                     />
                     }
 
@@ -190,11 +187,11 @@ return (
         </SectionTopTen>
 
         <SectionMovies>       
-                {moviesList}
+            {moviesList}
         </SectionMovies>
 
         <FooterMainPage>
-
+                    <h1>footer</h1>
         </FooterMainPage>
     </Container>
     
