@@ -146,7 +146,29 @@ export const NoVideo = styled.div`
     width: 100%;
 `
 
+export const Pag = styled.div`
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-color: black;
+   height: 40px;
+   width: 100%;
+   padding-bottom: 30px;
+`
+
+export const Index = styled.div`
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100px;
+`
+
 export const FooterMainPage = styled.div`
     height: 15vh;
     background-color: rgb(70, 69, 69);
+
+    h1{
+        margin: 0px;
+    }
 `

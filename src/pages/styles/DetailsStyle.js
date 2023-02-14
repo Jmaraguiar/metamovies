@@ -62,6 +62,10 @@ height: 380pxpx;
 padding-top: 20px;
 padding-bottom: 20px;
 
+h1{
+    color: white;
+}
+
 iframe{
     border: none;
     margin: 20px;
@@ -85,9 +89,35 @@ text-align: left;
 color: white;
 margin-left: 20px;
 align-self: flex-start;
+
+h4{
+    margin: 0px;
+}
+`
+
+export const Classificatios = styled.div`
+
+`
+
+export const Genres = styled.div`
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+
+div{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
 `
 
 export const FooterDetails = styled.div`
+display: flex;
+align-items: center;
+justify-content: space-around;
 height: 150px;
 background-color: green;
 `

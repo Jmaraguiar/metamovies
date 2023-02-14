@@ -1,8 +1,10 @@
+import { CircularProgress } from "@mui/material"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { RelatedCard } from "../components/RelatedCard/relatedCard"
 import { goToMainPage } from "../router/cordinator"
-import { Banner, Description, DetailsContainer, FogDisplay, FooterDetails, HeaderDetails, Info, SectionDetails, Trailer } from "./styles/DetailsStyle"
+import { Banner, Classificatios, Description, DetailsContainer, FogDisplay, FooterDetails, Genres, HeaderDetails, Info, SectionDetails, Trailer } from "./styles/DetailsStyle"
 
 
 export const Details = (props)=>{
@@ -10,6 +12,7 @@ export const Details = (props)=>{
     const [movie,setMovie] = useState()
     const [config, setConfig] = useState()
     const [video,setVideo] = useState()
+    const [related,setRelated] = useState()
     const nav = useNavigate()
     const params = useParams()
 
@@ -36,9 +39,23 @@ export const Details = (props)=>{
                 "Authorization": `Bearer ${token}`
             }
         }
-        await axios.get(`https://api.themoviedb.org/3/movie/${params.id}`, Headers)
+        await axios.get(`https://api.themoviedb.org/3/movie/${params.id}?language=pt-BR`, Headers)
             .then(res => {
                 setMovie(res.data)
+            }).catch(error => {
+                console.log(error)
+            })
+    }
+
+    const getRelated = async ()=>{
+        const Headers = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+        await axios.get(`https://api.themoviedb.org/3/movie/${params.id}/recommendations?language=pt-BR`, Headers)
+            .then(res => {
+                setRelated(res.data.results)
             }).catch(error => {
                 console.log(error)
             })
@@ -64,6 +81,26 @@ export const Details = (props)=>{
         }
     }
 
+    const relatedList = related && related.slice(0,10).map((movie)=>{
+        return(
+            <RelatedCard
+            key={movie.id}
+            title={movie.title}
+            config={config}
+            />
+        )
+    })
+
+    const genreList = movie && movie.genres.slice(0,3).map((genre,index)=>{
+        return(
+            <div
+            key={genre.id}
+            >
+                {movie && movie.genres[index].name}
+            </div>
+        )
+    })
+
     useEffect(()=>{
         getMovie()
         getConfig()
@@ -71,6 +108,7 @@ export const Details = (props)=>{
 
     useEffect(()=>{
         getVideo()
+        getRelated()
     },[movie])
     
 return (
@@ -80,7 +118,7 @@ return (
                     <h1>LOGO</h1>
                     <div>
                         <button onClick={()=>goToMainPage(nav)}>back</button>
-                        <button onClick={()=>console.log(movie,config)}>test</button>
+                        <button onClick={()=>console.log(movie)}>test</button>
                     </div>
             </HeaderDetails>
             <SectionDetails>
@@ -88,21 +126,33 @@ return (
                     <img src={`${config && config.base_url}w500${movie && movie.poster_path}`}/>
                     <Description>
                         <p>{movie && movie.overview}</p>
+                        <Classificatios>
+                            <h4>Gêneros</h4>
+                            <hr/>
+                            <Genres>
+                                {genreList}
+                            </Genres>
+                        </Classificatios>
                     </Description>
                 </Banner>
                 <Trailer>
-                <iframe 
+                {video && video[0] != undefined?
+                    <iframe 
                     width="100%"
                     height="100%"
                     src={`https://www.youtube.com/embed/${video && video[0].key}`}
-                    />
+                    /> 
+                :
+                    <CircularProgress />
+                }
+
                 </Trailer>
                 <Info>
                     <h1>info</h1>
                 </Info>
             </SectionDetails>
             <FooterDetails>
-            
+                {relatedList}
             </FooterDetails>
         </FogDisplay>
     </DetailsContainer>
