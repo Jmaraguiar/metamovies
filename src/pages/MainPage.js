@@ -1,109 +1,46 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import axios from 'axios'
 import { BackgroundMainPage, BlackFog, Container, Display, FooterMainPage, HeaderBottom, HeaderMainPage, HeaderTop, Index, Logo, MainTitle, Menu, NavLeft, NavRight, NoVideo, Pag, SectionMainPage, SectionMovies, SectionTopTen } from "./styles/MainPageStyle"
 import { Card } from "../components/Card/card"
 import { Button } from "@mui/material"
-import { createTheme } from '@mui/material/styles';
+import { useChangeBanner } from "../Functions/changeBanner"
+import { useChangeIndex } from "../Functions/changeIndex"
+import { BASE_TOKEN } from "../constants/baseToken"
+import { BASE_URL } from "../constants/baseURL"
 
-export const MainPage = (props)=>{
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxY2YxZjk1MTdhM2I3YmVmNjNlYjE1YWYxMjIyYzQ2ZCIsInN1YiI6IjYyZDcwN2IwY2FhNTA4MDA0YzQ3YTM1OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yuLQlgWELJrenepPsUp46EbeCEybz2QpMtqlFSGRLN4"
-    const [movies,setMovies] = useState()
-    const [banner,setBanner] = useState(0)
-    const [bannerLeft,setBannerLeft] = useState(9)
-    const [bannerRight,setBannerRight] = useState(1)
-    const [index,setIndex] = useState(1)
-    const [videoBanner,setVideoBanner] = useState()
+
+export const MainPage = (props) => {
+    const [movies, setMovies] = useState()
+    const [banner, setBanner] = useState(0)
+    const [topTen, setTopTen] = useState()
+    const [bannerLeft, setBannerLeft] = useState()
+    const [bannerRight, setBannerRight] = useState(1)
+    const [index, setIndex] = useState(1)
+    const [videoBanner, setVideoBanner] = useState()
     const [config, setConfig] = useState()
 
-   
-
-const theme = createTheme({
-  status: {
-    danger: '#e53e3e',
-  },
-  palette: {
-    primary: {
-      main: '#0971f1',
-      darker: '#053e85',
-    },
-    neutral: {
-      main: '#64748B',
-      contrastText: '#fff',
-    },
-  },
-});
-
-    const ChangeIndex = (direction)=>{
-        let num = index
-
-        if (direction == true) {
-            num ++
-        }
-        else{
-            num --
-        }
-
-        if (num <= 0) {
-            num = 1
-        }
-        else if (num >= 1001) {
-            num = 1000
-        }
-
-        setIndex(num)
-        
+    const ChangeIndex = (direction) => {
+        const result = useChangeIndex(direction, index)
+        setIndex(result)
     }
 
-    const ChangeBanner = (direction)=> {
-        let num = banner
-        let numLeft = bannerLeft
-        let numRight = bannerRight
+    const ChangeBanner = (direction) => {
+        const result = useChangeBanner(direction, banner, bannerLeft,bannerRight,topTen)
 
-        if (direction == true) {
-            num++
-            numLeft++
-            numRight++
-        }
-        else {
-            num--
-            numLeft--
-            numRight--
-        }
-
-        if (num >= 10){
-            num = 0
-        }else if (num <= -1){
-            num = 9
-        }
-
-        if (numLeft >= 10){
-            numLeft = 0
-        }else if (numLeft <= -1){
-            numLeft = 9
-        }
-
-        if (numRight >= 10){
-            numRight = 0
-        }else if (numRight <= -1){
-            numRight = 9
-        }
-
-        setBanner(num)
-        setBannerLeft(numLeft)
-        setBannerRight(numRight)
-
+        setBanner(result.banner)
+        setBannerLeft(result.left)
+        setBannerRight(result.right)
     }
 
     const getConfig = async () => {
 
         const Headers = {
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${BASE_TOKEN}`
             }
         }
 
-        await axios.get(`https://api.themoviedb.org/3/configuration`, Headers)
+        await axios.get(`${BASE_URL}/configuration`, Headers)
             .then(res => {
                 setConfig(res.data.images)
             }).catch(error => {
@@ -111,13 +48,15 @@ const theme = createTheme({
             })
     }
 
-    const getMovies = async ()=>{
+
+
+    const getMovies = async () => {
         const Headers = {
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${BASE_TOKEN}`
             }
         }
-        await axios.get(`https://api.themoviedb.org/3/movie/popular?language=pt-BR&page=${index}`, Headers)
+        await axios.get(`${BASE_URL}/movie/popular?language=pt-BR&page=${index}`, Headers)
             .then(res => {
                 setMovies(res.data.results)
             }).catch(error => {
@@ -125,29 +64,45 @@ const theme = createTheme({
             })
     }
 
-    const getVideoBanner = async ()=>{
+    const getTopTen = async () => {
         const Headers = {
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${BASE_TOKEN}`
             }
         }
-        
-        if(movies){
-            await axios.get(`https://api.themoviedb.org/3/movie/${movies[banner].id}/videos`, Headers)
+        await axios.get(`${BASE_URL}/movie/now_playing?language=pt-BR&page=${1}`, Headers)
             .then(res => {
-                const video = res.data.results.filter((video)=>{
-                    return video.type == "Trailer"
-                })
-                setVideoBanner(video)
+                setTopTen(res.data.results.slice(0, 10))
+                setBannerLeft(res.data.results.slice(0, 10).length -1)
             }).catch(error => {
                 console.log(error)
             })
+    }
+
+    const getVideoBanner = async () => {
+        const Headers = {
+            headers: {
+                "Authorization": `Bearer ${BASE_TOKEN}`
+            }
+        }
+
+        if (movies) {
+            await axios.get(`${BASE_URL}/movie/${topTen[banner].id}/videos`, Headers)
+                .then(res => {
+                    const video = res.data.results.filter((video) => {
+                        return video.type == "Trailer"
+                    })
+                    setVideoBanner(video)
+                }).catch(error => {
+                    console.log(error)
+                })
         }
     }
 
     useEffect(() => {
         getMovies()
         getConfig()
+        getTopTen()
     }, [])
 
     useEffect(() => {
@@ -155,7 +110,7 @@ const theme = createTheme({
     }, [index])
 
     useEffect(() => {
-        if(movies){
+        if (movies) {
             getVideoBanner()
         }
     }, [movies])
@@ -165,95 +120,92 @@ const theme = createTheme({
         getVideoBanner()
     }, [banner])
 
-    const moviesList = movies && movies.map((movie)=>{
-        return(
+    const moviesList = movies && movies.map((movie) => {
+        return (
             <Card
-            config = {config}
-            score = {movie.vote_average}
-            imgPath = {movie.backdrop_path}
-            vote = {movie.vote_average}
-            id = {movie.id}
-            title = {movie.title}
-            key = {movie.id}
+                config={config}
+                score={movie.vote_average}
+                imgPath={movie.backdrop_path}
+                vote={movie.vote_average}
+                id={movie.id}
+                title={movie.title}
+                key={movie.id}
             />
         )
     })
 
-return (
-    <Container>
-        <BackgroundMainPage>
-            <BlackFog>
-                <HeaderMainPage>
-                    <HeaderTop>
-                        <Logo>METAMOVIES</Logo>
-                        <Menu>
-                            <Button
-                            onClick={()=>{console.log(movies)}}
-                            variant="contained"
-                            >
-                                Navegar
-                            </Button>
-                        </Menu>
-                    </HeaderTop>
-                    <MainTitle>
-                        <h1> OS MELHORES FILMES DA ATUALIDADE </h1>
-                    </MainTitle>
-                    <HeaderBottom>
+    return (
+        <Container>
+            <BackgroundMainPage>
+                <BlackFog>
+                    <HeaderMainPage>
+                        <HeaderTop>
+                            <Logo>METAMOVIES</Logo>
+                            <Menu>
+                                <Button
+                                    onClick={() => { console.log(`${BASE_URL}/movie/${topTen[banner].id}/videos`,topTen) }}
+                                    variant="contained"
+                                >
+                                    Navegar
+                                </Button>
+                            </Menu>
+                        </HeaderTop>
+                        <MainTitle>
+                            <h1> OS MELHORES FILMES DA ATUALIDADE </h1>
+                        </MainTitle>
+                        <HeaderBottom>
                             <h1>Instagram</h1>
                             <h1>Youtube</h1>
                             <h1>TikTok</h1>
-                    </HeaderBottom>
-                </HeaderMainPage>
-            </BlackFog>
-        </BackgroundMainPage>
-        <SectionTopTen color="black">
+                        </HeaderBottom>
+                    </HeaderMainPage>
+                </BlackFog>
+            </BackgroundMainPage>
+            <SectionTopTen color="black">
                 <NavLeft
-                img = {`${config && config.base_url}w500${movies && movies[bannerLeft].poster_path}`}
-                onClick={()=> ChangeBanner(false)}
-                 >
-                    
-                </NavLeft>       
+                    img={`${config && config.base_url}w500${topTen && topTen[bannerLeft].poster_path}`}
+                    onClick={() => ChangeBanner(false)}
+                >
+
+                </NavLeft>
                 <Display>
 
-                    {videoBanner && videoBanner[0] === undefined? 
-                    <NoVideo>
-                        <h1>Sem Trailer</h1>
-                    </NoVideo>
-                    :
-                    <iframe 
-                    width="100%"
-                    height="100%"
-                    src={`https://www.youtube.com/embed/${videoBanner && videoBanner[0].key}`}
-                    />
+                    {videoBanner && videoBanner[0] === undefined ?
+                        <NoVideo>
+                            <h1>Sem Trailer</h1>
+                        </NoVideo>
+                        :
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            src={`https://www.youtube.com/embed/${videoBanner && videoBanner[0].key}`}
+                        />
                     }
 
                 </Display>
                 <NavRight
-                img = {`${config && config.base_url}w500${movies && movies[bannerRight].poster_path}`}
-                onClick={()=> ChangeBanner(true)}
+                    img={`${config && config.base_url}w500${topTen && topTen[bannerRight].poster_path}`}
+                    onClick={() => ChangeBanner(true)}
                 >
-                    
+
                 </NavRight>
-        </SectionTopTen>
+            </SectionTopTen>
 
-        <SectionMovies>       
-            {moviesList}
-        </SectionMovies>
-        <Pag>
-            <Index>
-                <button onClick={()=>ChangeIndex(false)}>{"<"}</button>
-                <h3>{index}</h3>
-                <button onClick={()=>ChangeIndex(true)}>{">"}</button>
-            </Index>
-        </Pag>
+            <SectionMovies>
+                {moviesList}
+            </SectionMovies>
+            <Pag>
+                <Index>
+                    <button onClick={() => ChangeIndex(false)}>{"<"}</button>
+                    <h3>{index}</h3>
+                    <button onClick={() => ChangeIndex(true)}>{">"}</button>
+                </Index>
+            </Pag>
 
-        <FooterMainPage>
-                    <h1>footer</h1>
-        </FooterMainPage>
-    </Container>
-    
-    
-    
+            <FooterMainPage>
+                <h1>footer</h1>
+            </FooterMainPage>
+        </Container>
 
-)
+    )
 }
