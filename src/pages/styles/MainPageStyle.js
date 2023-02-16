@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import img1 from "../../data/cinema.jpg"
 import img2 from "../../data/moviesBackground.webp"
 
 export const Container = styled.div`

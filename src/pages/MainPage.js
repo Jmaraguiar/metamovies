@@ -7,6 +7,8 @@ import { useChangeBanner } from "../Functions/changeBanner"
 import { useChangeIndex } from "../Functions/changeIndex"
 import { BASE_TOKEN } from "../constants/baseToken"
 import { BASE_URL } from "../constants/baseURL"
+import { goToNavigate } from "../router/cordinator"
+import { useNavigate } from "react-router-dom"
 
 
 export const MainPage = (props) => {
@@ -18,6 +20,7 @@ export const MainPage = (props) => {
     const [index, setIndex] = useState(1)
     const [videoBanner, setVideoBanner] = useState()
     const [config, setConfig] = useState()
+    const nav = useNavigate()
 
     const ChangeIndex = (direction) => {
         const result = useChangeIndex(direction, index)
@@ -141,14 +144,6 @@ export const MainPage = (props) => {
                     <HeaderMainPage>
                         <HeaderTop>
                             <Logo>METAMOVIES</Logo>
-                            <Menu>
-                                <Button
-                                    onClick={() => { console.log(`${BASE_URL}/movie/${topTen[banner].id}/videos`,topTen) }}
-                                    variant="contained"
-                                >
-                                    Navegar
-                                </Button>
-                            </Menu>
                         </HeaderTop>
                         <MainTitle>
                             <h1> OS MELHORES FILMES DA ATUALIDADE </h1>
@@ -203,7 +198,9 @@ export const MainPage = (props) => {
             </Pag>
 
             <FooterMainPage>
-                <h1>footer</h1>
+                <p>© 2023 João Marcos Alves de Aguiar</p>
+                <p>Linkedin</p>
+                <p>GitHub</p>
             </FooterMainPage>
         </Container>
 

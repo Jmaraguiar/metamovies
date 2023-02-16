@@ -182,13 +182,15 @@ return (
                     <div>
                         <p>Produzida por: {movie && movie.production_companies[0].name}</p>
                         <p>País: {movie && movie.production_countries[0].name}</p>
+                        <p>Data de lançamento:  {movie && movie.release_date}</p>
                     </div>
                     <ScoreDetails>
                         <CircularProgress size="10vw" color="success" variant="determinate" value={movie && movie.vote_average * 10}/>
                         <h3>{movie && movie.vote_average}</h3>
                     </ScoreDetails>
                     <div>
-                        <p>Data de lançamento:  {movie && movie.release_date}</p>
+                        <button>Voto positivo</button>
+                        <button>Voto negativo</button>
                     </div>
                 </Info>
             </SectionDetails>
