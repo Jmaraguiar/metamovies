@@ -9,6 +9,13 @@ import { BASE_TOKEN } from "../constants/baseToken"
 import { BASE_URL } from "../constants/baseURL"
 import { goToNavigate } from "../router/cordinator"
 import { useNavigate } from "react-router-dom"
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import FaceIcon from "../data/icons/facebook.png"
+import YouTubeIcon from "../data/icons/youtube.png"
+import InstaIcon from "../data/icons/instagram.png"
+import GitIcon from "../data/icons/github.png"
+import LinkedInIcon from "../data/icons/linkedin.png"
 
 
 export const MainPage = (props) => {
@@ -149,9 +156,18 @@ export const MainPage = (props) => {
                             <h1> OS MELHORES FILMES DA ATUALIDADE </h1>
                         </MainTitle>
                         <HeaderBottom>
-                            <h1>Instagram</h1>
-                            <h1>Youtube</h1>
-                            <h1>TikTok</h1>
+                            <div>
+                                <img src={FaceIcon}/>
+                                <a>@MetamoviesOFC</a>
+                            </div>
+                            <div>
+                                <img src={YouTubeIcon}/>
+                                <a>@Metamoovies</a>
+                            </div>
+                            <div>
+                                <img src={InstaIcon}/>
+                                <a>@Meta_movies</a>
+                            </div>
                         </HeaderBottom>
                     </HeaderMainPage>
                 </BlackFog>
@@ -191,16 +207,16 @@ export const MainPage = (props) => {
             </SectionMovies>
             <Pag>
                 <Index>
-                    <button onClick={() => ChangeIndex(false)}>{"<"}</button>
+                    <ArrowBackIosIcon className="arrow" onClick={() => ChangeIndex(false)}/>
                     <h3>{index}</h3>
-                    <button onClick={() => ChangeIndex(true)}>{">"}</button>
+                    <ArrowForwardIosIcon className="arrow" onClick={() => ChangeIndex(true)}/>
                 </Index>
             </Pag>
 
             <FooterMainPage>
-                <p>© 2023 João Marcos Alves de Aguiar</p>
-                <p>Linkedin</p>
-                <p>GitHub</p>
+                <h4>© 2023 João Marcos Alves de Aguiar</h4>
+                <p><img src={LinkedInIcon}/>Linkedin</p>
+                <p><img src={GitIcon}/>GitHub</p>
             </FooterMainPage>
         </Container>
 

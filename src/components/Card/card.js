@@ -1,6 +1,5 @@
 import { CircularProgress } from "@mui/material"
 import { CardContainer, Score } from "./cardStyles"
-import image from '../../data/cinema.jpg'
 import { goToDetailPage } from "../../router/cordinator"
 import { useNavigate } from "react-router-dom"
 

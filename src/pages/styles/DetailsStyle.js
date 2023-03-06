@@ -89,6 +89,50 @@ grid-row-start: 2;
 grid-row-end: 2;
 
 
+
+`
+
+export const Vote = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: space-around;
+align-items: center;
+text-align: center;
+
+div{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+`
+
+export const PositiveVote = styled.div`
+width: 100px;
+transition: all ease-in-out 0.15s;
+
+        :hover{
+            transform: scale(106%,106%);
+            cursor: pointer;
+        }
+
+        :active{
+            transform: scale(100%,100%);
+        }
+`
+
+export const NegativeVote = styled.div`
+width: 100px;
+transition: all ease-in-out;
+
+        :hover{
+            transform: scale(106%,106%);
+            cursor: pointer;
+        }
+
+        :active{
+            transform: scale(100%,100%);
+        }
 `
 
 export const Description = styled.div`
@@ -142,4 +186,13 @@ display: flex;
 align-items: center;
 justify-content: space-around;
 height: 200px;
+
+.arrow{
+        cursor: pointer;
+        transition: all ease-in-out 0.15s;
+
+        :hover{
+            transform: scale(115%,115%);
+        }
+    }
 `

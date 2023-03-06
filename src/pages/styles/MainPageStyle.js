@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import img2 from "../../data/moviesBackground.webp"
+import img2 from "../../data/img/moviesBackground.webp"
 
 export const Container = styled.div`
 
@@ -55,6 +55,20 @@ export const HeaderBottom = styled.div`
     align-items: center;
     height: 80px;
     width: 100%;
+
+    div{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        a{
+            margin-top: 10px;
+        }
+    }
+
+    img{
+        height: 100px;
+    }
 `
 
 export const Logo = styled.h1`
@@ -161,13 +175,48 @@ export const Index = styled.div`
     justify-content: space-around;
     align-items: center;
     width: 100px;
+
+    .arrow{
+        cursor: pointer;
+        transition: all ease-in-out 0.15s;
+
+        :hover{
+            transform: scale(115%,115%);
+        }
+    }
+
+    h3{
+        margin-left: 70px;
+        margin-right: 70px;
+    }
+    
 `
 
 export const FooterMainPage = styled.div`
-    height: 15vh;
+    height: 17vh;
     background-color: rgb(70, 69, 69);
+    color: white;
 
-    h1{
+    p{
+        display: flex;
+        gap: 5px;
+        align-items: center;
         margin: 0px;
+        margin-bottom: 15px;
+        margin-left: 20px;
+
+        :hover{
+            cursor: pointer;
+        }
+
+        img{
+            height: 20px;
+        }
+    }
+
+    h4{
+        margin: 0px;
+        margin-left: 10px;
+        margin-bottom: 15px;
     }
 `
